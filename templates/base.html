@@ -3,9 +3,25 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/styles.css">
     <title>{% block title %} {% endblock %}</title>
 </head>
 <body>
+    <nav>
+        <ul>
+            <li> <a href="#">Home</a> </li>
+            <li> <a href="#">Report Lost Pet</a> </li>
+            <li> <a href="#">Lost & Found</a> </li>
+            <li> <a href="#">Get Alerts</a> </li>
+            {% if not user %}
+            <div class="nav-right">
+            <li > <a href="#">Sign Up</a> </li>
+            <li > <a href="#">Login</a> </li>
+            </div>
+            {% endif %}
+
+        </ul>
+    </nav>
     {% block content %}
 
     {% endblock %}

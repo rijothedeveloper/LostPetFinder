@@ -1,0 +1,33 @@
+/* nav {
+    display: block;
+} */
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #F4A261;
+}
+
+nav ul li {
+    float: left;
+}
+
+nav ul div.nav-right{
+    float: right;
+    margin-right: 10px;
+}
+
+a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    
+  }
+
+  nav ul li a:hover {
+    background-color: #E76F51;
+  }
