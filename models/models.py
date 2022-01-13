@@ -12,7 +12,7 @@ def connect_db(app):
 class User(db.Model):
     """ user """
     
-    __tablename__ = "user"
+    __tablename__ = "users"
     
     id = db.Column(db.Integer,
                     primary_key=True,
@@ -52,7 +52,6 @@ class User(db.Model):
                     location_id=location_id, 
                     phone=phone)
         
-        db.session.add(user)
         return user
     
     @classmethod
@@ -65,7 +64,7 @@ class User(db.Model):
         If can't find matching user (or if password is wrong), returns False.
         """
         
-        user = cls.query.filter_by(username=username).first()
+        user = cls.query.filter_by(email=email).first()
         
         if user:
             is_auth = bcrypt.check_password_hash(user.password, password)
@@ -121,7 +120,7 @@ class lost_animal(db.Model):
                           db.ForeignKey('animal.id', ondelete="CASCADE"))
     
     user_id = db.Column(db.Integer,
-                        db.ForeignKey('user.id', ondelete="CASCADE"))
+                        db.ForeignKey('users.id', ondelete="CASCADE"))
     
     location_id = db.Column(db.Integer,
                            db.ForeignKey('location.id', ondelete="CASCADE"))
@@ -138,7 +137,7 @@ class alert(db.Model):
                     autoincrement=True)
     
     user_id = db.Column(db.Integer,
-                        db.ForeignKey('user.id', ondelete="CASCADE"))
+                        db.ForeignKey('users.id', ondelete="CASCADE"))
     
     animal_id = db.Column(db.Integer, 
                           db.ForeignKey('animal.id', ondelete="CASCADE"))
