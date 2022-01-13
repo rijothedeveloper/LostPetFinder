@@ -38,6 +38,11 @@ def do_logout():
     """Logout user."""
     if CURR_USER_KEY in session:
         del session[CURR_USER_KEY]
+        
+def isLogged():
+    if CURR_USER_KEY in session:
+        return True
+    return False
 
 @app.route("/")
 def show_home():
@@ -103,7 +108,15 @@ def logout():
     flash(f"{g.user.full_name} successfully logged out", 'success')
     return redirect("/")
 
+#############################################################################
+#Logged in area
 
+#############################################################################
+
+@app.route("/reportPet")
+def reportPet():
+    if not isLogged():
+        return redirect("/login")
 
 ##############################################################################
 # Turn off all caching in Flask
