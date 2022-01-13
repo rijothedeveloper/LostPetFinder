@@ -1,6 +1,6 @@
 from unittest import TestCase
 from app import app
-from models.models import db, connect_db, User, Location
+from models.models import db, User, Location
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///lost_pet_test'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -13,15 +13,17 @@ db.create_all()
 class test_user(TestCase):
     email = ""
     password = ""
-    def setUp(self):
+    
+    @classmethod
+    def setUpClass(cls):
         location = Location(formatted_address="570 w tramonto", latitude=1, longitude=1)
         db.session.add(location)
         db.session.commit()
         
-        self.email = "logicDemo@gmail.com"
-        self.password = "poopoo"
-        user = User.signup(email=self.email, 
-                           password=self.password, 
+        cls.email = "logicDemo@gmail.com"
+        cls.password = "poopoo"
+        user = User.signup(email=cls.email, 
+                           password=cls.password, 
                            first_name="rego", 
                            last_name="George", 
                            location_id=1, 
@@ -30,9 +32,10 @@ class test_user(TestCase):
         db.session.add(user)
         db.session.commit()
         
-    def tearDown(self):
+    def tearDownClass(self):
         db.session.rollback()
         User.query.delete()
+        Location.query.delete()
         db.session.commit()
         
     def test_signup(self):
