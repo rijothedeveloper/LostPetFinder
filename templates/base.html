@@ -15,14 +15,18 @@
             <li> <a href="#">Get Alerts</a> </li>
             {% if not user %}
             <div class="nav-right">
-            <li > <a href="/signup">Sign Up</a> </li>
-            <li > <a href="#">Login</a> </li>
+                {% if not g.user %}
+                    <li > <a href="/signup">Sign Up</a> </li>
+                    <li > <a href="#">Login</a> </li>
+                {% else %}
+                <li > <a href="/users/{{ g.user.id }}">{{ g.user.first_name }}</a> </li>
+                {% endif %}
             </div>
             {% endif %}
 
         </ul>
     </nav>
-    
+
     {% for category, message in get_flashed_messages(with_categories=True) %}
         <div class="alert alert-{{ category }}">{{ message }}</div>
     {% endfor %}

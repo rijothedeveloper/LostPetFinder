@@ -20,7 +20,13 @@ class test_user(TestCase):
         
         self.email = "logicDemo@gmail.com"
         self.password = "poopoo"
-        user = User.signup(email=self.email, password=self.password, first_name="rego", last_name="George", location_id=1, phone="567890123")
+        user = User.signup(email=self.email, 
+                           password=self.password, 
+                           first_name="rego", 
+                           last_name="George", 
+                           location_id=1, 
+                           phone="567890123")
+        
         db.session.add(user)
         db.session.commit()
         

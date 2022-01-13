@@ -76,10 +76,10 @@ a {
     color: white;
   }
 
-  .cat-success{
+  .alert-success{
       color: green;
   }
 
-  .cat-error {
+  .alert-error {
       color: red;
   }
