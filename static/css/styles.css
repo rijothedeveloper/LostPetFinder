@@ -75,3 +75,11 @@ a {
     background-color: var(--primary-color);
     color: white;
   }
+
+  .cat-success{
+      color: green;
+  }
+
+  .cat-error {
+      color: red;
+  }

@@ -1,6 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 
+bcrypt = Bcrypt()
 db = SQLAlchemy()
 
 def connect_db(app):
@@ -73,11 +74,6 @@ class User(db.Model):
 
         return False
     
-        
-         
-
-        
-    
     
     
 class Location(db.Model):
@@ -89,20 +85,8 @@ class Location(db.Model):
                     primary_key=True,
                     autoincrement=True)
     
-    street = db.Column(db.Text,
-                    nullable=False)
-    
-    city = db.Column(db.Text,
-                    nullable=False)
-    
-    state = db.Column(db.Text,
-                    nullable=False)
-    
-    zip = db.Column(db.Text,
-                    nullable=False)
-    
-    country = db.Column(db.Text,
-                    nullable=False)
+    formatted_address = db.Column(db.Text,
+                                  nullable=False)
     
     latitude = db.Column(db.Float,
                     nullable=False)
