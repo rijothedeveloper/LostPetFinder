@@ -38,6 +38,16 @@ class User(db.Model):
     def __repr__(self):
         return f"<User #{self.id}: {self.first_name}, {self.last_name}, {self.email}>"
     
+    def getFullName(self):
+        return f'{self.first_name} {self.last_name}'
+    
+    def setFullName(self, first_name, last_name):
+        self.first_name = first_name
+        self.last_name = last_name
+        db.session.commit()
+        
+    full_name = property(getFullName, setFullName)
+    
     @classmethod
     def signup(cls, email, password, first_name, last_name, location_id, phone):
         """Sign up user.

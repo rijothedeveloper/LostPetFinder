@@ -1,6 +1,7 @@
 from flask import Flask, render_template, redirect, flash, session, g
 from flask_debugtoolbar import DebugToolbarExtension
 from forms.forms import SignupForm
+from forms.login_form import loginForm
 from models.models import db, connect_db, Location, User
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "oh-so-secret"
@@ -35,7 +36,6 @@ def do_login(user):
 
 def do_logout():
     """Logout user."""
-
     if CURR_USER_KEY in session:
         del session[CURR_USER_KEY]
 
@@ -72,12 +72,36 @@ def addUser():
             db.session.add(new_user)
             db.session.commit()
             do_login(new_user)
-            flash(f"{new_user.email} added", 'cat-success')
+            flash(f"{new_user.email} added", 'success')
             return redirect("/")
         else:
-             flash("error in form submission", 'cat-error')
+             flash("error in creating user", 'error')
         
     return render_template("users/signup-form.html", form=form)
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    form = loginForm()
+    if form.validate_on_submit():
+        email = form.email.data
+        password = form.password.data
+        user = User.autenticate(email=email, password=password)
+        if user:
+            do_login(user)
+            flash(f"{user.full_name} successfully logged in", 'success')
+        else:
+            flash("not a valid user", 'error')
+            
+        return redirect("/")
+    
+    else:
+        return render_template("users/login-form.html", form=form)
+    
+@app.route("/logout")
+def logout():
+    do_logout()
+    flash(f"{g.user.full_name} successfully logged out", 'success')
+    return redirect("/")
 
 
 

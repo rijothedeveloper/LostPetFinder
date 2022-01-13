@@ -17,9 +17,10 @@
             <div class="nav-right">
                 {% if not g.user %}
                     <li > <a href="/signup">Sign Up</a> </li>
-                    <li > <a href="#">Login</a> </li>
+                    <li > <a href="/login">Login</a> </li>
                 {% else %}
                 <li > <a href="/users/{{ g.user.id }}">{{ g.user.first_name }}</a> </li>
+                <li > <a href="/logout">Logout</a> </li>
                 {% endif %}
             </div>
             {% endif %}

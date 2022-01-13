@@ -32,7 +32,8 @@ class test_user(TestCase):
         db.session.add(user)
         db.session.commit()
         
-    def tearDownClass(self):
+    @classmethod
+    def tearDownClass(cls):
         db.session.rollback()
         User.query.delete()
         Location.query.delete()
