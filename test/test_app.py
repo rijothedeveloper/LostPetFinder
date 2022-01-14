@@ -124,4 +124,19 @@ class test_app(TestCase):
          html = resp.get_data(as_text=True)
          shouldContain = 'Location'
          self.assertIn(shouldContain, html)
+         
+         data = { 
+                  'type': "dog",  
+                  'breed': "poodle",
+                  'comments': "none",
+                  'address': "570 w tramonto dr",
+                  'latitude':1,
+                  'longitude':1}
+         resp = client.post("reportPet",
+                           data=data,
+                           follow_redirects=True)
+         self.assertEqual(resp.status_code, 200)
+         html = resp.get_data(as_text=True)
+         shouldContain = 'rego'
+         self.assertIn(shouldContain, html)
       
