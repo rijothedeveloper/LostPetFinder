@@ -45,9 +45,19 @@ def isLogged():
         return True
     return False
 
+def get_recent_lost_pets():
+    lost_pets = Lost_animal.query.all()
+    if len(lost_pets) > 0:
+        animal = lost_pets[0].animal
+    return lost_pets
+    
+    
+    
+
 @app.route("/")
 def show_home():
-    return render_template("index.html")
+    lost_pets = get_recent_lost_pets()
+    return render_template("index.html", lost_pets=lost_pets)
 
 @app.route("/signup", methods=["GET", "POST"])
 def addUser():
@@ -130,7 +140,7 @@ def reportPet():
         location = Location(formatted_address=formatted_address, latitude=latitude, longitude=longitude)
         db.session.add(location)
         animal = Animal(type=type, breed=breed)
-        db.session.add(location)
+        db.session.add(animal)
         db.session.commit()
         lost_animal = Lost_animal(animal_id=animal.id, user_id=g.user.id, location_id=location.id, image=image, comments=comments)
         try:

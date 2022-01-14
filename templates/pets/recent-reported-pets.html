@@ -1,0 +1,9 @@
+{% for lost_pet in lost_pets%}
+
+    <div class="pets-sec">
+        <img src="{{lost_pet.image}}" alt="{{lost_pet.animal.type}}">
+        <h2>{{lost_pet.animal.type}}</h2>
+        <h3>{{lost_pet.animal.breed}}</h3>
+    </div>
+
+{% endfor %}

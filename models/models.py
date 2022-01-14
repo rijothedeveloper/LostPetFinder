@@ -139,6 +139,8 @@ class Lost_animal(db.Model):
     
     comments = db.Column(db.Text)
     
+    animal = db.relationship("Animal")
+    
 class alert(db.Model):
     """ alert """
     
