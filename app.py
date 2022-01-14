@@ -2,7 +2,8 @@ from flask import Flask, render_template, redirect, flash, session, g
 from flask_debugtoolbar import DebugToolbarExtension
 from forms.forms import SignupForm
 from forms.login_form import loginForm
-from models.models import db, connect_db, Location, User
+from forms.report_pet_form import reportPetForm
+from models.models import Animal, db, connect_db, Location, User, Lost_animal
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "oh-so-secret"
 debug = DebugToolbarExtension(app)
@@ -113,10 +114,32 @@ def logout():
 
 #############################################################################
 
-@app.route("/reportPet")
+@app.route("/reportPet", methods=["GET", "POST"])
 def reportPet():
     if not isLogged():
         return redirect("/login")
+    form = reportPetForm()
+    if form.validate_on_submit():
+        type = form.pet_type.data
+        breed = form.breed.data
+        comments = form.comments.data
+        formatted_address = form.address.data
+        latitude = form.latitude.data
+        longitude = form.longitude.data
+        location = Location(formatted_address=formatted_address, latitude=latitude, longitude=longitude)
+        db.session.add(location)
+        animal = Animal(type=type, breed=breed)
+        db.session.add(location)
+        db.session.commit()
+        lost_animal = Lost_animal(animal_id=animal.id, user_id=g.user.id, location_id=location.id, comments=comments)
+        try:
+            db.session.add(lost_animal)
+            db.session.commit()
+            flash(f"{animal.type} is reported as found at {location.formatted_address}")
+            return redirect("/")
+        except:
+            flash("Pet is not reported")
+    return render_template("pets/report-pet-form.html", form=form)
 
 ##############################################################################
 # Turn off all caching in Flask

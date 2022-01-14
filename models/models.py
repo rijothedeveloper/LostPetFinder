@@ -117,7 +117,7 @@ class Animal(db.Model):
     
     breed = db.Column(db.Text)
     
-class lost_animal(db.Model):
+class Lost_animal(db.Model):
     """ lost_animal """
     
     __tablename__ = "lost_animal"

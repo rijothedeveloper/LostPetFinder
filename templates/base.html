@@ -9,8 +9,8 @@
 <body>
     <nav>
         <ul>
-            <li> <a href="#">Home</a> </li>
-            <li> <a href="#">Report Lost Pet</a> </li>
+            <li> <a href="/">Home</a> </li>
+            <li> <a href="/reportPet">Report Lost Pet</a> </li>
             <li> <a href="#">Lost & Found</a> </li>
             <li> <a href="#">Get Alerts</a> </li>
             {% if not user %}
@@ -35,6 +35,11 @@
     {% block content %}
 
     {% endblock %}
+    
+    <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAleLWSoj4wIihOMwdStcPdztvvg5JmxqA&callback=initMap&libraries=places&v=weekly" >
+    </script>
+    <script src="/static/js/scripts.js"></script>
     
 </body>
 </html>

@@ -100,7 +100,7 @@ class test_app(TestCase):
          shouldContain = 'rego'
          self.assertIn(shouldContain, html)
          
-   def test_login_post(self):
+   def test_report_pet(self):
       with app.test_client() as client:
          client.get("/logout")
          resp = client.get("reportPet",
@@ -114,14 +114,14 @@ class test_app(TestCase):
          data = { 
                   'email': "logicDemo@gmail.com",  
                   'password': "poopoo" }
-         resp = client.post("/login",
+         client.post("/login",
                                data= data,
                                follow_redirects=True)
          
-         client.get("reportPet",
+         resp = client.get("reportPet",
                            follow_redirects=True)
          self.assertEqual(resp.status_code, 200)
          html = resp.get_data(as_text=True)
-         shouldContain = 'Address'
+         shouldContain = 'Location'
          self.assertIn(shouldContain, html)
       
