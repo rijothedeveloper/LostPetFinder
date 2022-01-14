@@ -1,0 +1,20 @@
+<nav>
+    <ul>
+        <li> <a href="/">Home</a> </li>
+        <li> <a href="/reportPet">Report Lost Pet</a> </li>
+        <li> <a href="#">Lost & Found</a> </li>
+        <li> <a href="#">Get Alerts</a> </li>
+        {% if not user %}
+        <div class="nav-right">
+            {% if not g.user %}
+                <li > <a href="/signup">Sign Up</a> </li>
+                <li > <a href="/login">Login</a> </li>
+            {% else %}
+            <li > <a href="/users/{{ g.user.id }}">{{ g.user.first_name }}</a> </li>
+            <li > <a href="/logout">Logout</a> </li>
+            {% endif %}
+        </div>
+        {% endif %}
+
+    </ul>
+</nav>
