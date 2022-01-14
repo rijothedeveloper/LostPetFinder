@@ -135,6 +135,8 @@ class Lost_animal(db.Model):
     location_id = db.Column(db.Integer,
                            db.ForeignKey('location.id', ondelete="CASCADE"))
     
+    image = db.Column(db.Text)
+    
     comments = db.Column(db.Text)
     
 class alert(db.Model):

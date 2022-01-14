@@ -13,6 +13,7 @@ class reportPetForm(FlaskForm):
     pet_type = SelectField("Pet Type", choices=types, validators=[InputRequired()])
     breed = StringField('Breed', validators=[DataRequired()])
     address = StringField('Location', validators=[DataRequired()])
+    image = StringField("Image-URL")
     comments = TextAreaField("Comments")
     latitude = HiddenField("latitude")
     longitude = HiddenField("longitude")
