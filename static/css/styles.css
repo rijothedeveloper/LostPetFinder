@@ -85,3 +85,24 @@ a {
   .alert-error {
       color: red;
   }
+
+  /* pet showing section */
+
+  .pets-sec{
+    display: flex;
+  }
+
+  .pet-sec{
+    display: flex;
+    margin: 10px;
+    flex-direction: column;
+    width: 300px;
+    height: 300px;
+    border: solid red 2px;
+    padding: 5px;
+  }
+
+  .pet-sec img{
+    height: 75%;
+    width: 100%;
+  }

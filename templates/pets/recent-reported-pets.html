@@ -1,9 +1,11 @@
-{% for lost_pet in lost_pets%}
-
-    <div class="pets-sec">
-        <img src="{{lost_pet.image}}" alt="{{lost_pet.animal.type}}">
-        <h2>{{lost_pet.animal.type}}</h2>
-        <h3>{{lost_pet.animal.breed}}</h3>
-    </div>
-
-{% endfor %}
+<article class="pets-sec">
+    <h2>Recently lost pets</h2>
+    {% for lost_pet in lost_pets%}
+        <section class="pet-sec">
+            <img src="static/images/{{lost_pet.image}}" alt="{{lost_pet.animal.type}}">
+            <h3>{{lost_pet.animal.type}}</h3>
+            <h5>{{lost_pet.animal.breed}}</h5>
+            <p>{{lost_pet.comments}}</p>
+        </section>
+    {% endfor %}
+    </article>

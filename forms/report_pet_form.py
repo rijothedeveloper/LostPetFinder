@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SelectField, TextAreaField, HiddenField
+from wtforms import StringField, SelectField, TextAreaField, HiddenField, FileField
 from wtforms.validators import DataRequired, InputRequired
 
 class reportPetForm(FlaskForm):
@@ -13,7 +13,7 @@ class reportPetForm(FlaskForm):
     pet_type = SelectField("Pet Type", choices=types, validators=[InputRequired()])
     breed = StringField('Breed', validators=[DataRequired()])
     address = StringField('Location', validators=[DataRequired()])
-    image = StringField("Image-URL")
+    image = FileField("choose image")
     comments = TextAreaField("Comments")
     latitude = HiddenField("latitude")
     longitude = HiddenField("longitude")

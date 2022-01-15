@@ -4,6 +4,7 @@ from forms.forms import SignupForm
 from forms.login_form import loginForm
 from forms.report_pet_form import reportPetForm
 from models.models import Animal, db, connect_db, Location, User, Lost_animal
+from werkzeug.utils import secure_filename
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "oh-so-secret"
 debug = DebugToolbarExtension(app)
@@ -134,7 +135,8 @@ def reportPet():
         breed = form.breed.data
         comments = form.comments.data
         formatted_address = form.address.data
-        image = form.image.data
+        filename = secure_filename(form.image.data.filename)
+        form.image.data.save('static/images/' + filename)
         latitude = form.latitude.data
         longitude = form.longitude.data
         location = Location(formatted_address=formatted_address, latitude=latitude, longitude=longitude)
@@ -142,7 +144,7 @@ def reportPet():
         animal = Animal(type=type, breed=breed)
         db.session.add(animal)
         db.session.commit()
-        lost_animal = Lost_animal(animal_id=animal.id, user_id=g.user.id, location_id=location.id, image=image, comments=comments)
+        lost_animal = Lost_animal(animal_id=animal.id, user_id=g.user.id, location_id=location.id, image=filename, comments=comments)
         try:
             db.session.add(lost_animal)
             db.session.commit()
