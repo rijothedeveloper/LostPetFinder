@@ -128,7 +128,7 @@ class test_app(TestCase):
          data = { 
                   'type': "dog",  
                   'breed': "poodle",
-                  'comments': "none",
+                  'comments': "my test comment",
                   'address': "570 w tramonto dr",
                   'latitude':1,
                   'longitude':1}
@@ -137,6 +137,6 @@ class test_app(TestCase):
                            follow_redirects=True)
          self.assertEqual(resp.status_code, 200)
          html = resp.get_data(as_text=True)
-         shouldContain = 'rego'
+         shouldContain = 'my test comment'
          self.assertIn(shouldContain, html)
       
