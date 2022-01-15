@@ -90,10 +90,12 @@ a {
 
   .pets-sec{
     display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
   }
 
   .pet-sec{
-    display: flex;
+    
     margin: 10px;
     flex-direction: column;
     width: 300px;

@@ -141,6 +141,8 @@ class Lost_animal(db.Model):
     
     animal = db.relationship("Animal")
     
+    location = db.relationship("Location")
+    
 class alert(db.Model):
     """ alert """
     
