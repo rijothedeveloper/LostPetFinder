@@ -12,7 +12,7 @@ db.drop_all()
 db.create_all()
 
 class test_app(TestCase):
-   
+   user = ""
    @classmethod
    def setUpClass(cls):
       location = Location(formatted_address="570 w tramonto", latitude=1, longitude=1)
@@ -41,7 +41,6 @@ class test_app(TestCase):
                              comments="no comments")
       db.session.add(lost_pet)
       db.session.commit()
-      
       
         
    @classmethod
@@ -160,4 +159,23 @@ class test_app(TestCase):
          html = resp.get_data(as_text=True)
          shouldContain = '<p>no comments</p>'
          self.assertIn(shouldContain, html)
-      
+         
+   def test_profile_page(self):
+      with app.test_client() as client:
+         #  login
+         data = { 
+                  'email': "logicDemo@gmail.com",  
+                  'password': "poopoo" }
+         client.post("/login",
+                               data= data,
+                               follow_redirects=True)
+         
+         resp = client.get("/users/1")
+         self.assertEqual(resp.status_code, 200)
+         html = resp.get_data(as_text=True)
+         # check edit button is there or not
+         shouldContain = '<button class="btn btn-primary">Edit</button>'
+         self.assertIn(shouldContain, html)
+         # check user reported pets are showing
+         shouldContain = '<p>no comments</p>'
+         self.assertIn(shouldContain, html)
