@@ -48,11 +48,11 @@ def isLogged():
 
 def get_recent_lost_pets():
     lost_pets = Lost_animal.query.all()
-    if len(lost_pets) > 0:
-        animal = lost_pets[0].animal
     return lost_pets
-    
-    
+
+def get_pets():
+    lost_pets = Lost_animal.query.filter(Lost_animal.user_id == g.user.id).all()
+    return lost_pets
     
 
 @app.route("/")
@@ -94,7 +94,7 @@ def addUser():
         else:
              flash("error in creating user", 'error')
         
-    return render_template("users/signup-form.html", form=form)
+    return render_template("users/signup.html", form=form)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -129,6 +129,23 @@ def show_pets():
 #Logged in area
 
 #############################################################################
+
+@app.route("/users/<int:user_id>")
+def show_profile(user_id):
+    if not isLogged():
+        flash("please login", "error")
+        return redirect("/login")
+    
+    # check the url for currently logged in user
+    if user_id != g.user.id:
+        flash("wrong user, login first", "error")
+        return redirect("/login")
+    # formatted_user = g.user
+    # formatted_user.address = g.user.address.formatted_address
+    form = SignupForm(obj=g.user)
+    lost_pets = get_pets()
+    return render_template("users/profile.html", form=form)
+    
 
 @app.route("/reportPet", methods=["GET", "POST"])
 def reportPet():

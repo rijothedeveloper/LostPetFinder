@@ -32,7 +32,11 @@ class User(db.Model):
     
     location_id = db.Column(db.Integer,
                            db.ForeignKey('location.id', ondelete="CASCADE"))
+    
     phone = db.Column(db.Text)
+    
+    location = db.relationship("Location")
+    
     
     
     def __repr__(self):
@@ -46,7 +50,14 @@ class User(db.Model):
         self.last_name = last_name
         db.session.commit()
         
+    def getAddress(self):
+        return self.location.formatted_address
+    
+    def setAddress(self, address):
+        self.location.formatted_address = address
+        
     full_name = property(getFullName, setFullName)
+    address = property(getAddress, setAddress)
     
     @classmethod
     def signup(cls, email, password, first_name, last_name, location_id, phone):
