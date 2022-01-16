@@ -140,11 +140,9 @@ def show_profile(user_id):
     if user_id != g.user.id:
         flash("wrong user, login first", "error")
         return redirect("/login")
-    # formatted_user = g.user
-    # formatted_user.address = g.user.address.formatted_address
     form = SignupForm(obj=g.user)
     lost_pets = get_pets()
-    return render_template("users/profile.html", form=form)
+    return render_template("users/profile.html", form=form, user=g.user)
     
 
 @app.route("/reportPet", methods=["GET", "POST"])
