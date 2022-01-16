@@ -1,6 +1,6 @@
 from unittest import TestCase
 from app import app
-from models.models import db, User, Location
+from models.models import db, User, Location, Animal, Lost_animal
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///lost_pet_test'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -25,11 +25,24 @@ class test_app(TestCase):
                            password=password, 
                            first_name="rego", 
                            last_name="George", 
-                           location_id=1, 
+                           location_id=location.id, 
                            phone="567890123")
-        
+      
+      animal = Animal(type="dog",
+                      breed="poodle")
+      
       db.session.add(user)
+      db.session.add(animal)
       db.session.commit()
+      lost_pet = Lost_animal(animal_id=animal.id,
+                             user_id=user.id,
+                             location_id=location.id,
+                             image="",
+                             comments="no comments")
+      db.session.add(lost_pet)
+      db.session.commit()
+      
+      
         
    @classmethod
    def tearDownClass(cls):
@@ -138,5 +151,13 @@ class test_app(TestCase):
          self.assertEqual(resp.status_code, 200)
          html = resp.get_data(as_text=True)
          shouldContain = 'my test comment'
+         self.assertIn(shouldContain, html)
+         
+   def test_show_lost_pets(self):
+      with app.test_client() as client:
+         resp = client.get("/browse-pets")
+         self.assertEqual(resp.status_code, 200)
+         html = resp.get_data(as_text=True)
+         shouldContain = '<p>no comments</p>'
          self.assertIn(shouldContain, html)
       
