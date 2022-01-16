@@ -3,6 +3,12 @@
 {% block title %} Pet Finder {% endblock %}
 
 {% block content %}
-    welcome to lost petfinder
-    {% include 'pets/recent-reported-pets.html' %}
+    <div class="home-container">
+        <div class="banner">
+            welcome to lost petfinder
+        </div>
+        <div class="recent">
+            {% include 'pets/recent-reported-pets.html' %}
+        </div>
+    </div>
 {% endblock %}

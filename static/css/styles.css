@@ -86,12 +86,27 @@ a {
       color: red;
   }
 
+  /* home page */
+
+  .home-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .banner {
+    grid-column: 1 / 4;
+  }
+
+  .recent {
+    grid-column: 1 / 4;
+  }
+
   /* pet showing section */
 
   .pets-sec{
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: start;
   }
 
   .pet-sec{

@@ -136,7 +136,7 @@ def reportPet():
         comments = form.comments.data
         formatted_address = form.address.data
         imageName = secure_filename(form.image.data.filename)
-        form.image.data.save('static/images/' + imageName)
+        form.image.data.save('static/uploaded_pet_images/' + imageName)
         latitude = form.latitude.data
         longitude = form.longitude.data
         location = Location(formatted_address=formatted_address, latitude=latitude, longitude=longitude)
