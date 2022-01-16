@@ -5,8 +5,8 @@
         <section class="pet-sec">
             {% if user %}
                 <div class="icon">
-                    <img src="/static/img/delete.png" alt="delete pet">
-                    <img src="/static/img/pencil.png" alt="edit pet">
+                    <img src="/static/img/delete.png" alt="delete pet" id="btn-delete">
+                    <img src="/static/img/pencil.png" alt="edit pet" id="btn-edit">
                 </div>
             {% endif %}
             <img src="/static/uploaded_pet_images/{{lost_pet.image}}" class="petimg" alt="{{lost_pet.animal.type}}">

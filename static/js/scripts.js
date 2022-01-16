@@ -1,4 +1,7 @@
 const addressInput = document.getElementById("address");
+const deleteButton = document.getElementById("btn-delete");
+const editButton = document.getElementById("btn-edit");
+
 const addressOptions = {
     fields: ["formatted_address", "geometry", "name"],
     strictBounds: false,
@@ -22,4 +25,12 @@ addressAutocomplete.addListener("place_changed", () => {
         document.getElementById("latitude").value = place.geometry.location.lat()
         document.getElementById("longitude").value = place.geometry.location.lng()
     
+  })
+
+  deleteButton.addEventListener("click", event => {
+    
+  })
+
+  editButton.addEventListener("click", event => {
+
   })
