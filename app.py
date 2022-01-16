@@ -120,6 +120,11 @@ def logout():
     flash(f"{g.user.full_name} successfully logged out", 'success')
     return redirect("/")
 
+@app.route("/browse-pets")
+def show_pets():
+    lost_pets = get_recent_lost_pets()
+    return render_template("pets/show-reported-pets.html", lost_pets=lost_pets)
+
 #############################################################################
 #Logged in area
 

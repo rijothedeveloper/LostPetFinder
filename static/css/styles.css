@@ -108,9 +108,8 @@ a {
     flex-wrap: wrap;
     justify-content: start;
   }
-
+  
   .pet-sec{
-    
     margin: 10px;
     flex-direction: column;
     width: 300px;
