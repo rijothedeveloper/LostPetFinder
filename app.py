@@ -142,7 +142,7 @@ def show_profile(user_id):
         return redirect("/login")
     form = SignupForm(obj=g.user)
     lost_pets = get_pets()
-    return render_template("users/profile.html", form=form, user=g.user)
+    return render_template("users/profile.html", form=form, user=g.user, lost_pets=lost_pets)
     
 
 @app.route("/reportPet", methods=["GET", "POST"])
