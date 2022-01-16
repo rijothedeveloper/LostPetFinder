@@ -88,6 +88,7 @@ a {
 
   /* home page */
 
+
   .home-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -103,6 +104,17 @@ a {
 
   /* pet showing section */
 
+  icon {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+  }
+
+  .icon img{
+    width: 20px;
+    height: 20px;
+  }
+
   .pets-sec{
     display: flex;
     flex-wrap: wrap;
@@ -110,15 +122,16 @@ a {
   }
   
   .pet-sec{
+    display: flex;
     margin: 10px;
     flex-direction: column;
     width: 300px;
-    height: 300px;
+    height: 400px;
     border: solid var(--secondary-color) 2px;
     padding: 5px;
   }
 
-  .pet-sec img{
+  .petimg{
     height: 75%;
     width: 100%;
   }
