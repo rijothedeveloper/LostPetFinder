@@ -219,3 +219,28 @@ class test_app(TestCase):
          html = resp.get_data(as_text=True)
          shouldContain = 'no comments'
          self.assertIn(shouldContain, html)
+         
+   def test_edit_pet_post(self):
+      with app.test_client() as client:
+         #  login
+         data = { 
+                  'email': "logicDemo@gmail.com",  
+                  'password': "poopoo" }
+         client.post("/login",
+                               data= data,
+                               follow_redirects=True)
+         
+         data = { 
+                  'type': "dog",  
+                  'breed': "poodle poodle",
+                  'comments': "my test comment",
+                  'address': "570 w tramonto dr",
+                  'latitude':1,
+                  'longitude':1}
+         resp = client.post("/pet/1/edit",
+                           data=data,
+                           follow_redirects=True)
+         self.assertEqual(resp.status_code, 200)
+         html = resp.get_data(as_text=True)
+         shouldContain = 'poodle poodle'
+         self.assertIn(shouldContain, html)

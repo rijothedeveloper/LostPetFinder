@@ -180,7 +180,7 @@ def editPet(petId):
     if g.user == None or lost_pet.user_id != g.user.id:
         flash("not autherised to edit this pet", "error")
         return redirect("/login")
-    form = ReportPetForm(obj=lost_pet)
+    form = ReportPetForm()
     if form.validate_on_submit():
         location = lost_pet.location
         animal = lost_pet.animal
