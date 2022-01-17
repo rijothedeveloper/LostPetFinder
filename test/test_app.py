@@ -23,7 +23,7 @@ class test_app(TestCase):
       password = "poopoo"
       user = User.signup(email=email, 
                            password=password, 
-                           first_name="rego", 
+                           first_name="rijo", 
                            last_name="George", 
                            location_id=location.id, 
                            phone="567890123")
@@ -189,12 +189,30 @@ class test_app(TestCase):
          resp = client.get("/users/1")
          self.assertEqual(resp.status_code, 200)
          html = resp.get_data(as_text=True)
+         shouldContain = 'rijo'
+         self.assertIn(shouldContain, html)
          # check edit button is there or not
-         shouldContain = '<button class="btn btn-primary">Edit</button>'
+         shouldContain = '<button class="btn btn-primary">Save</button>'
          self.assertIn(shouldContain, html)
          # check user reported pets are showing
          shouldContain = '<p>no comments</p>'
          self.assertIn(shouldContain, html)
+         
+         # test edit profile submission
+         data = { 
+                  'email': "testuser@test.com",  
+                  'password': "mypass",
+                  'first_name': "rego",
+                  'last_name': "George",
+                  'phone': "123456789",
+                  'address': "570 w tramonto dr",
+                  }
+         resp = client.post("/users/1", data=data)
+         self.assertEqual(resp.status_code, 200)
+         html = resp.get_data(as_text=True)
+         shouldContain = 'rego'
+         self.assertIn(shouldContain, html)
+         
          
    def test_edit_pet(self):
       with app.test_client() as client:

@@ -131,7 +131,7 @@ def show_pets():
 
 #############################################################################
 
-@app.route("/users/<int:user_id>")
+@app.route("/users/<int:user_id>", methods=["GET", "POST"])
 def show_profile(user_id):
     if not isLogged():
         flash("please login", "error")
@@ -142,6 +142,19 @@ def show_profile(user_id):
         flash("wrong user, login first", "error")
         return redirect("/login")
     form = SignupForm(obj=g.user)
+    if form.validate_on_submit():
+        g.user.email = form.email.data
+        g.user.password = form.password.data
+        g.user.first_name = form.first_name.data
+        g.user.last_name = form.last_name.data
+        g.user.phone = form.phone.data
+        g.user.formatted_address = form.address.data
+        if form.latitude.data:
+            g.user.location.latitude = form.latitude.data
+        if form.longitude.data:
+            g.user.location.longitude = form.longitude.data
+        db.session.commit()
+    
     lost_pets = get_pets()
     return render_template("users/profile.html", form=form, user=g.user, lost_pets=lost_pets)
     
@@ -195,12 +208,8 @@ def editPet(petId):
         location.formatted_address = form.address.data
         if form.latitude.data:
             location.latitude = form.latitude.data
-        else:
-            location.latitude = location.latitude
         if form.longitude.data:
             location.longitude = form.longitude.data
-        else:
-            location.longitude = location.longitude
         if(form.image.data != '' and form.image.data != None):
             imageName = secure_filename(form.image.data.filename)
             if imageName !="":
