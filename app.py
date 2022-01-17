@@ -1,5 +1,6 @@
 from flask import Flask, render_template, redirect, flash, session, g
 from flask_debugtoolbar import DebugToolbarExtension
+from forms.edit_pet_form import EditPetForm
 from forms.forms import SignupForm
 from forms.login_form import LoginForm
 from forms.report_pet_form import ReportPetForm
@@ -155,8 +156,12 @@ def reportPet():
         breed = form.breed.data
         comments = form.comments.data
         formatted_address = form.address.data
-        imageName = secure_filename(form.image.data.filename)
-        form.image.data.save('static/uploaded_pet_images/' + imageName)
+        if(form.image.data != '' and form.image.data != None):
+            imageName = secure_filename(form.image.data.filename)
+            if(len(imageName) > 0):
+                form.image.data.save('static/uploaded_pet_images/' + imageName)
+        else:
+            imageName = ""
         latitude = form.latitude.data
         longitude = form.longitude.data
         location = Location(formatted_address=formatted_address, latitude=latitude, longitude=longitude)
@@ -180,7 +185,7 @@ def editPet(petId):
     if g.user == None or lost_pet.user_id != g.user.id:
         flash("not autherised to edit this pet", "error")
         return redirect("/login")
-    form = ReportPetForm()
+    form = EditPetForm(obj=lost_pet)
     if form.validate_on_submit():
         location = lost_pet.location
         animal = lost_pet.animal
@@ -196,14 +201,18 @@ def editPet(petId):
             location.longitude = form.longitude.data
         else:
             location.longitude = location.longitude
-        imageName = secure_filename(form.image.data.filename)
-        if imageName !="":
-            form.image.data.save('static/uploaded_pet_images/' + imageName)
-            lost_pet.image = imageName
+        if(form.image.data != '' and form.image.data != None):
+            imageName = secure_filename(form.image.data.filename)
+            if imageName !="":
+                form.image.data.save('static/uploaded_pet_images/' + imageName)
+                lost_pet.image = imageName
+        
         db.session.commit()
         return redirect(f"/users/{lost_pet.user_id}")
         
     return render_template("/pets/edit-pet-form.html", form=form, lost_pet=lost_pet)
+        
+
 
 @app.route("/pet/<int:petId>/delete", methods=["GET", "POST"])
 def delete_pet(petId):

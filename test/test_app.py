@@ -154,9 +154,9 @@ class test_app(TestCase):
          self.assertIn(shouldContain, html)
          
          data = { 
-                  'type': "dog",  
+                  'pet_type': "Dog",  
                   'breed': "poodle",
-                  'comments': "my test comment",
+                  'comments': "my test comment of new",
                   'address': "570 w tramonto dr",
                   'latitude':1,
                   'longitude':1}
@@ -165,7 +165,7 @@ class test_app(TestCase):
                            follow_redirects=True)
          self.assertEqual(resp.status_code, 200)
          html = resp.get_data(as_text=True)
-         shouldContain = 'my test comment'
+         shouldContain = 'my test comment of new'
          self.assertIn(shouldContain, html)
          
    def test_show_lost_pets(self):
@@ -231,7 +231,7 @@ class test_app(TestCase):
                                follow_redirects=True)
          
          data = { 
-                  'type': "dog",  
+                  'pet_type': "Dog",  
                   'breed': "poodle poodle",
                   'comments': "my test comment",
                   'address': "570 w tramonto dr",
