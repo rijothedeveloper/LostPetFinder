@@ -216,3 +216,6 @@ class test_app(TestCase):
                                follow_redirects=True)
          resp = client.get("/pet/1/edit")
          self.assertEqual(resp.status_code, 200)
+         html = resp.get_data(as_text=True)
+         shouldContain = 'no comments'
+         self.assertIn(shouldContain, html)
