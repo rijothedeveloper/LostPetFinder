@@ -178,7 +178,7 @@ def reportPet():
 def editPet(petId):
     lost_pet = Lost_animal.query.get_or_404(petId)
     if g.user == None or lost_pet.user_id != g.user.id:
-        flash("not autherised to delete this pet", "error")
+        flash("not autherised to edit this pet", "error")
         return redirect("/login")
     form = ReportPetForm(obj=lost_pet)
     if form.validate_on_submit():
@@ -204,6 +204,17 @@ def editPet(petId):
         return redirect(f"/users/{lost_pet.user_id}")
         
     return render_template("/pets/edit-pet-form.html", form=form, lost_pet=lost_pet)
+
+@app.route("/pet/<int:petId>/delete", methods=["GET", "POST"])
+def delete_pet(petId):
+    lost_pet = Lost_animal.query.get_or_404(petId)
+    if g.user == None or lost_pet.user_id != g.user.id:
+        flash("not autherised to delete this pet", "error")
+        return redirect("/login")
+    Lost_animal.query.filter(Lost_animal.id == petId).delete()
+    db.session.commit()
+    return redirect(f"/users/{lost_pet.user_id}")
+    
 
 ##############################################################################
 # Turn off all caching in Flask

@@ -11,7 +11,7 @@
             <p>{{lost_pet.comments}}</p>
             {% if user %}
             <div class="icon">
-                <a href=""><img src="/static/img/delete.png" alt="delete pet" id="btn-delete"></a>
+                <a href="/pet/{{lost_pet.id}}/delete"><img src="/static/img/delete.png" alt="delete pet" id="btn-delete"></a>
                 <a href="/pet/{{lost_pet.id}}/edit"><img src="/static/img/pencil.png" alt="edit pet" id="btn-edit"></a>
             </div>
         {% endif %}
