@@ -29,7 +29,7 @@ nav ul div.nav-right{
     margin-right: 10px;
 }
 
-a {
+nav ul li a {
     display: block;
     color: white;
     text-align: center;
@@ -104,7 +104,8 @@ a {
 
   /* pet showing section */
 
-  icon {
+  icon a{
+    display: inline;
     position: absolute;
     left: 0px;
     top: 0px;

@@ -201,9 +201,7 @@ def editPet(petId):
             form.image.data.save('static/uploaded_pet_images/' + imageName)
             lost_pet.image = imageName
         db.session.commit()
-        return {
-            "edited": "yes"
-            }
+        return redirect(f"/users/{lost_pet.user_id}")
         
     return render_template("/pets/edit-pet-form.html", form=form, lost_pet=lost_pet)
 
