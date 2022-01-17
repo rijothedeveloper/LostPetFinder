@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block body_class %}Report Pet{% endblock %}
+
+{% block content %}
+
+    <form enctype="multipart/form-data" method="POST" id="user_form">
+
+        <h2 class="col-primary">Enter Pet details.</h2>
+
+        {{ form.hidden_tag() }}
+
+        {{form.pet_type.label}}
+        {{form.pet_type}}
+
+        {{ form.breed.label }}
+        {{form.breed(value=lost_pet.animal.breed)}}
+
+        {{ form.address.label }}
+        {{form.address(value=lost_pet.location.formatted_address)}}
+
+        {{ form.image.label }}
+        {{ form.image }}
+
+        {{ form.comments.label }}
+        {{form.comments(value=lost_pet.comments)}}
+
+        <input type="hidden" id="petId" name="petId" value={{lost_pet.id}}>
+
+        <button class="btn btn-primary">Save Pet</button>
+
+    </form>
+
+{% endblock %}

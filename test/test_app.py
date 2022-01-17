@@ -28,10 +28,18 @@ class test_app(TestCase):
                            location_id=location.id, 
                            phone="567890123")
       
+      user2 = User.signup(email="logicDemo@gmail.com", 
+                           password=password, 
+                           first_name="rego", 
+                           last_name="George", 
+                           location_id=location.id, 
+                           phone="567890123")
+      
       animal = Animal(type="dog",
                       breed="poodle")
       
       db.session.add(user)
+      db.session.add(user2)
       db.session.add(animal)
       db.session.commit()
       lost_pet = Lost_animal(animal_id=animal.id,
@@ -39,7 +47,15 @@ class test_app(TestCase):
                              location_id=location.id,
                              image="",
                              comments="no comments")
+      
+      lost_pet2 = Lost_animal(animal_id=animal.id,
+                             user_id=user2.id,
+                             location_id=location.id,
+                             image="",
+                             comments="no comments")
+      
       db.session.add(lost_pet)
+      db.session.add(lost_pet2)
       db.session.commit()
       
         
@@ -115,7 +131,7 @@ class test_app(TestCase):
    def test_report_pet(self):
       with app.test_client() as client:
          client.get("/logout")
-         resp = client.get("reportPet",
+         resp = client.get("/pet/add",
                            follow_redirects=True)
          self.assertEqual(resp.status_code, 200)
          html = resp.get_data(as_text=True)
@@ -130,7 +146,7 @@ class test_app(TestCase):
                                data= data,
                                follow_redirects=True)
          
-         resp = client.get("reportPet",
+         resp = client.get("/pet/add",
                            follow_redirects=True)
          self.assertEqual(resp.status_code, 200)
          html = resp.get_data(as_text=True)
@@ -144,7 +160,7 @@ class test_app(TestCase):
                   'address': "570 w tramonto dr",
                   'latitude':1,
                   'longitude':1}
-         resp = client.post("reportPet",
+         resp = client.post("/pet/add",
                            data=data,
                            follow_redirects=True)
          self.assertEqual(resp.status_code, 200)
@@ -179,3 +195,24 @@ class test_app(TestCase):
          # check user reported pets are showing
          shouldContain = '<p>no comments</p>'
          self.assertIn(shouldContain, html)
+         
+   def test_edit_pet(self):
+      with app.test_client() as client:
+         # make sure return 404 for invalid pet id
+         resp = client.get("/pet/125/edit")
+         self.assertEqual(resp.status_code, 404)
+         
+         # make sure user can delete his on reportings
+         resp = client.get("/pet/2/edit")
+         self.assertEqual(resp.status_code, 302)
+         
+         # make sure edit form is shown for users pet
+         #  login
+         data = { 
+                  'email': "logicDemo@gmail.com",  
+                  'password': "poopoo" }
+         client.post("/login",
+                               data= data,
+                               follow_redirects=True)
+         resp = client.get("/pet/1/edit")
+         self.assertEqual(resp.status_code, 200)

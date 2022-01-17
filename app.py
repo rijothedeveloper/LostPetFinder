@@ -1,8 +1,8 @@
 from flask import Flask, render_template, redirect, flash, session, g
 from flask_debugtoolbar import DebugToolbarExtension
 from forms.forms import SignupForm
-from forms.login_form import loginForm
-from forms.report_pet_form import reportPetForm
+from forms.login_form import LoginForm
+from forms.report_pet_form import ReportPetForm
 from models.models import Animal, db, connect_db, Location, User, Lost_animal
 from werkzeug.utils import secure_filename
 app = Flask(__name__)
@@ -98,7 +98,7 @@ def addUser():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    form = loginForm()
+    form = LoginForm()
     if form.validate_on_submit():
         email = form.email.data
         password = form.password.data
@@ -145,11 +145,11 @@ def show_profile(user_id):
     return render_template("users/profile.html", form=form, user=g.user, lost_pets=lost_pets)
     
 
-@app.route("/reportPet", methods=["GET", "POST"])
+@app.route("/pet/add", methods=["GET", "POST"])
 def reportPet():
     if not isLogged():
         return redirect("/login")
-    form = reportPetForm()
+    form = ReportPetForm()
     if form.validate_on_submit():
         type = form.pet_type.data
         breed = form.breed.data
@@ -173,6 +173,39 @@ def reportPet():
         except:
             flash("Pet is not reported")
     return render_template("pets/report-pet-form.html", form=form)
+
+@app.route("/pet/<int:petId>/edit", methods=["GET", "POST"])
+def editPet(petId):
+    lost_pet = Lost_animal.query.get_or_404(petId)
+    if g.user == None or lost_pet.user_id != g.user.id:
+        flash("not autherised to delete this pet", "error")
+        return redirect("/login")
+    form = ReportPetForm(obj=lost_pet)
+    if form.validate_on_submit():
+        location = lost_pet.location
+        animal = lost_pet.animal
+        animal.type = form.pet_type.data
+        animal.breed = form.breed.data
+        lost_pet.comments = form.comments.data
+        location.formatted_address = form.address.data
+        if form.latitude.data:
+            location.latitude = form.latitude.data
+        else:
+            location.latitude = location.latitude
+        if form.longitude.data:
+            location.longitude = form.longitude.data
+        else:
+            location.longitude = location.longitude
+        imageName = secure_filename(form.image.data.filename)
+        if imageName !="":
+            form.image.data.save('static/uploaded_pet_images/' + imageName)
+            lost_pet.image = imageName
+        db.session.commit()
+        return {
+            "edited": "yes"
+            }
+        
+    return render_template("/pets/edit-pet-form.html", form=form, lost_pet=lost_pet)
 
 ##############################################################################
 # Turn off all caching in Flask
