@@ -154,7 +154,7 @@ class Lost_animal(db.Model):
     
     location = db.relationship("Location")
     
-class alert(db.Model):
+class Alert(db.Model):
     """ alert """
     
     __tablename__ = "alert"
@@ -166,10 +166,12 @@ class alert(db.Model):
     user_id = db.Column(db.Integer,
                         db.ForeignKey('users.id', ondelete="CASCADE"))
     
-    animal_id = db.Column(db.Integer, 
-                          db.ForeignKey('animal.id', ondelete="CASCADE"))
     
     location_id = db.Column(db.Integer,
                            db.ForeignKey('location.id', ondelete="CASCADE"))
+    
+    type = db.Column(db.Text)
+    
+    breed = db.Column(db.Text)
     
     within = db.Column(db.Integer)

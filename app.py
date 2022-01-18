@@ -1,10 +1,11 @@
 from flask import Flask, render_template, redirect, flash, session, g
 from flask_debugtoolbar import DebugToolbarExtension
+from forms.alert_form import AlertForm
 from forms.edit_pet_form import EditPetForm
 from forms.forms import SignupForm
 from forms.login_form import LoginForm
 from forms.report_pet_form import ReportPetForm
-from models.models import Animal, db, connect_db, Location, User, Lost_animal
+from models.models import Animal, db, connect_db, Location, User, Lost_animal, Alert
 from werkzeug.utils import secure_filename
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "oh-so-secret"
@@ -220,6 +221,24 @@ def editPet(petId):
         return redirect(f"/users/{lost_pet.user_id}")
         
     return render_template("/pets/edit-pet-form.html", form=form, lost_pet=lost_pet)
+
+@app.route("/setAlert", methods=["GET", "POST"])
+def setAlert():
+    if g.user == None :
+        flash("not autherised to edit this pet", "error")
+        return redirect("/login")
+    form = AlertForm()
+    if form.validate_on_submit():
+        pet_type = form.pet_type.data
+        breed = form.breed.data
+        radius = form.radius.data
+        alert= Alert(user_id=g.user.id, location_id=g.user.location_id, type=pet_type, breed=breed, within=radius)
+        db.session.add(alert)
+        db.session.commit()
+        flash("alert created successfully", "success")
+        return redirect(f"/users/{g.user.id}")
+    return render_template("/users/create-alert-form.html", form=form)
+
         
 
 
