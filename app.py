@@ -7,6 +7,11 @@ from forms.login_form import LoginForm
 from forms.report_pet_form import ReportPetForm
 from models.models import Animal, db, connect_db, Location, User, Lost_animal, Alert
 from werkzeug.utils import secure_filename
+from services.alertService import AlertService
+from celery import Celery
+from flask_mail import Mail, Message
+
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "oh-so-secret"
 debug = DebugToolbarExtension(app)
@@ -16,6 +21,26 @@ CURR_USER_KEY = "curr_user"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///lost_pet'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
+
+# Celery configuration
+app.config['CELERY_BROKER_URL'] = 'redis://localhost:6379/0'
+app.config['CELERY_RESULT_BACKEND'] = 'redis://localhost:6379/0'
+
+# Initialize Celery
+celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
+celery.conf.update(app.config)
+
+# Flask-Mail configuration
+app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = "clothlog@gmail.com"
+app.config['MAIL_PASSWORD'] = "use your pass"
+app.config['MAIL_DEFAULT_SENDER'] = 'flask@example.com'
+
+# Initialize mail extensions
+mail = Mail(app)
+
 connect_db(app)
 # db.create_all()
 
@@ -55,10 +80,28 @@ def get_recent_lost_pets():
 def get_pets():
     lost_pets = Lost_animal.query.filter(Lost_animal.user_id == g.user.id).all()
     return lost_pets
+
+@celery.task
+def sendEmail(email_data):
+    
+    msg = Message(email_data['subject'],
+                  sender=app.config['MAIL_DEFAULT_SENDER'],
+                  recipients=[email_data['to']])
+    msg.body = email_data['body']
+    with app.app_context():
+        mail.send(msg)
     
 
 @app.route("/")
 def show_home():
+    # send the email
+    email_data = {
+        'subject': 'Hello from Flask',
+        'to': "rijogeorge7@gmail.com",
+        'body': 'This is a test email sent from a background Celery task.'
+    }
+    # task = sendEmail.delay(email_data)
+    sendEmail.apply_async(args=[email_data])
     lost_pets = get_recent_lost_pets()
     return render_template("index.html", lost_pets=lost_pets)
 
