@@ -7,7 +7,6 @@ from forms.login_form import LoginForm
 from forms.report_pet_form import ReportPetForm
 from models.models import Animal, db, connect_db, Location, User, Lost_animal, Alert
 from werkzeug.utils import secure_filename
-from services.alertService import AlertService
 from celery import Celery
 from flask_mail import Mail, Message
 
