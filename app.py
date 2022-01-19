@@ -9,9 +9,9 @@ from models.models import Animal, db, connect_db, Location, User, Lost_animal, A
 from werkzeug.utils import secure_filename
 from sqlalchemy import or_
 import requests
-import json
 from celery import Celery
 from flask_mail import Mail, Message
+from secret import getPass
 
 
 app = Flask(__name__)
@@ -37,7 +37,7 @@ app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USERNAME'] = "clothlog@gmail.com"
-app.config['MAIL_PASSWORD'] = "use your pass"
+app.config['MAIL_PASSWORD'] = getPass()
 app.config['MAIL_DEFAULT_SENDER'] = 'flask@example.com'
 
 # Initialize mail extensions
@@ -84,14 +84,20 @@ def get_pets():
     return lost_pets
 
 @celery.task
-def sendEmail(email_data):
-    
-    msg = Message(email_data['subject'],
+def sendEmail(alertEmails, lost_animal):
+    for email in alertEmails:
+        # send the email
+        email_data = {
+            'subject': f'new {lost_animal.animal.type} reported',
+            'to': email,
+            'body': f'A new animal of {lost_animal.animal.type} and breed {lost_animal.animal.breed} is found, please visit http://127.0.0.1:5000/pet/{lost_animal.id}'
+        }
+        msg = Message(email_data['subject'],
                   sender=app.config['MAIL_DEFAULT_SENDER'],
                   recipients=[email_data['to']])
-    msg.body = email_data['body']
-    with app.app_context():
-        mail.send(msg)
+        msg.body = email_data['body']
+        with app.app_context():
+            mail.send(msg)  
         
 def isValidDistance(animal_location, alert_location, within):
     query = {'origins':f"{animal_location.latitude},{animal_location.longitude}", 
@@ -128,6 +134,9 @@ def getAlertEmails(lost_animal):
 # @celery.task  
 def sendAlert(lost_animal):
     alertEmails = getAlertEmails(lost_animal)
+    
+    # sendEmail.apply_async(args=[email_data])
+    sendEmail(alertEmails, lost_animal)
 
 @app.route("/")
 def show_home():
