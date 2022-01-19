@@ -251,7 +251,7 @@ def show_profile(user_id):
         db.session.commit()
     
     lost_pets = get_pets()
-    alerts = Alert.query.all()
+    alerts = Alert.query.filter(Alert.user_id == g.user.id).all()
     return render_template("users/profile.html", form=form, user=g.user, lost_pets=lost_pets, alerts=alerts)
     
 
@@ -318,6 +318,16 @@ def editPet(petId):
         
     return render_template("/pets/edit-pet-form.html", form=form, lost_pet=lost_pet)
 
+@app.route("/pet/<int:petId>/delete", methods=["GET", "POST"])
+def delete_pet(petId):
+    lost_pet = Lost_animal.query.get_or_404(petId)
+    if g.user == None or lost_pet.user_id != g.user.id:
+        flash("not autherised to delete this pet", "error")
+        return redirect("/login")
+    Lost_animal.query.filter(Lost_animal.id == petId).delete()
+    db.session.commit()
+    return redirect(f"/users/{lost_pet.user_id}")
+
 @app.route("/setAlert", methods=["GET", "POST"])
 def setAlert():
     if g.user == None :
@@ -335,18 +345,35 @@ def setAlert():
         return redirect(f"/users/{g.user.id}")
     return render_template("/users/create-alert-form.html", form=form)
 
-        
-
-
-@app.route("/pet/<int:petId>/delete", methods=["GET", "POST"])
-def delete_pet(petId):
-    lost_pet = Lost_animal.query.get_or_404(petId)
-    if g.user == None or lost_pet.user_id != g.user.id:
-        flash("not autherised to delete this pet", "error")
+@app.route("/alert/<int:alertId>/edit", methods=["GET", "POST"])
+def editAlert(alertId):
+    # check logged in status
+    if g.user == None :
+        flash("not autherised to edit this alert", "error")
         return redirect("/login")
-    Lost_animal.query.filter(Lost_animal.id == petId).delete()
-    db.session.commit()
-    return redirect(f"/users/{lost_pet.user_id}")
+    alert = Alert.query.get(alertId)
+    # alert for wrong user
+    if alert.user_id != g.user.id:
+        flash("not autherised to edit this alert", "error")
+        return redirect("/login")
+    
+    form = AlertForm(obj=alert)
+    if form.validate_on_submit():
+        pet_type = form.pet_type.data
+        breed = form.breed.data
+        radius = form.radius.data
+        alert.type = pet_type
+        alert.breed = breed
+        alert.within = radius
+        db.session.add(alert)
+        try:
+            db.session.commit()
+        except Exception as e:
+            flash(e)
+        flash("alert edited successfully", "success")
+        return redirect(f"/users/{g.user.id}")
+        
+    return render_template("/users/create-alert-form.html", form=form, editForm=True)
     
 
 ##############################################################################

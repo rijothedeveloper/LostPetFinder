@@ -11,7 +11,7 @@ class AlertForm(FlaskForm):
              "Sheep",
              "other"]
     mileChoices = [5, 10,25,50,75,100]
-    pet_type = SelectField("Pet Type", choices=types, default="cat", validators=[InputRequired()])
+    pet_type = SelectField("Pet Type", choices=types, default="Cat", validators=[InputRequired()])
     breed = StringField("Breed")
     radius = SelectField("Radius", choices=mileChoices, default=5, validators=[InputRequired()])
     
