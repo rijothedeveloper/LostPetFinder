@@ -1,0 +1,20 @@
+<article >
+    <h2>My Alerts</h2>
+    <div class="pets-sec">
+    {% for alert in alerts %}
+        
+        <section class="alert-sec">
+            <h3>Type: {{alert.type}}</h3>
+            {% if alert.breed != "" %}
+                <h3>Breed: {{alert.breed}}</h3>
+            {% endif %}
+            <h3>Radius: {{alert.within}}</h3>
+            <h4>Address: {{alert.location.formatted_address}}</h4>
+            <div class="icon">
+                <a href="/alert/{{alert.id}}/delete"><img src="/static/img/delete.png" alt="delete alert" id="btn-delete"></a>
+                <a href="/alert/{{alert.id}}/edit"><img src="/static/img/pencil.png" alt="edit alert" id="btn-edit"></a>
+            </div>
+        </section>
+    {% endfor %}
+    </div>  
+    </article>

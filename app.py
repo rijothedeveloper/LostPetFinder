@@ -251,7 +251,8 @@ def show_profile(user_id):
         db.session.commit()
     
     lost_pets = get_pets()
-    return render_template("users/profile.html", form=form, user=g.user, lost_pets=lost_pets)
+    alerts = Alert.query.all()
+    return render_template("users/profile.html", form=form, user=g.user, lost_pets=lost_pets, alerts=alerts)
     
 
 @app.route("/pet/add", methods=["GET", "POST"])

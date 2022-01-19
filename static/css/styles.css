@@ -123,12 +123,11 @@ nav ul li a {
     justify-content: start;
   }
   
-  .pet-sec{
+  .pet-sec, .alert-sec{
     display: flex;
     margin: 10px;
     flex-direction: column;
     width: 300px;
-    height: 400px;
     border: solid var(--secondary-color) 2px;
     padding: 5px;
   }
