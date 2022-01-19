@@ -83,14 +83,13 @@ def get_pets():
     lost_pets = Lost_animal.query.filter(Lost_animal.user_id == g.user.id).all()
     return lost_pets
 
-@celery.task
-def sendEmail(alertEmails, lost_animal):
+def sendEmail(alertEmails, petData):
     for email in alertEmails:
         # send the email
         email_data = {
-            'subject': f'new {lost_animal.animal.type} reported',
+            'subject': f'new {petData["type"]} reported',
             'to': email,
-            'body': f'A new animal of {lost_animal.animal.type} and breed {lost_animal.animal.breed} is found, please visit http://127.0.0.1:5000/pet/{lost_animal.id}'
+            'body': f'A new animal of {petData["type"]} and breed {petData["breed"]} is found, please visit http://127.0.0.1:5000/pet/{petData["id"]}'
         }
         msg = Message(email_data['subject'],
                   sender=app.config['MAIL_DEFAULT_SENDER'],
@@ -99,8 +98,8 @@ def sendEmail(alertEmails, lost_animal):
         with app.app_context():
             mail.send(msg)  
         
-def isValidDistance(animal_location, alert_location, within):
-    query = {'origins':f"{animal_location.latitude},{animal_location.longitude}", 
+def isValidDistance(petData, alert_location, within):
+    query = {'origins':f"{petData['latitude']},{petData['longitude']}", 
              'destinations':f"{alert_location.latitude},{alert_location.longitude}",
              'units' : 'imperial',
              'key' : 'AIzaSyAleLWSoj4wIihOMwdStcPdztvvg5JmxqA'}
@@ -122,32 +121,24 @@ def isValidDistance(animal_location, alert_location, within):
     except requests.exceptions.RequestException as err:
         print(err)
   
-def getAlertEmails(lost_animal):
-    alerts = db.session.query(Alert).filter(Alert.type == lost_animal.animal.type).filter(or_(Alert.breed == lost_animal.animal.breed, Alert.breed == "")).all()
+def getAlertEmails(petData):
+    alerts = db.session.query(Alert).filter(Alert.type == petData['type']).filter(or_(Alert.breed == petData['breed'], Alert.breed == "")).all()
     alertEmails = []
     for alert in alerts:
-        if isValidDistance(lost_animal.location, alert.location, alert.within):
+        if isValidDistance(petData, alert.location, alert.within):
             user = User.query.get(alert.user_id)
             alertEmails.append(user.email)
     return alertEmails
 
-# @celery.task  
-def sendAlert(lost_animal):
-    alertEmails = getAlertEmails(lost_animal)
+@celery.task  
+def sendAlert(petData):
+    alertEmails = getAlertEmails(petData)
     
     # sendEmail.apply_async(args=[email_data])
-    sendEmail(alertEmails, lost_animal)
+    sendEmail(alertEmails, petData)
 
 @app.route("/")
 def show_home():
-    # send the email
-    email_data = {
-        'subject': 'Hello from Flask',
-        'to': "rijogeorge7@gmail.com",
-        'body': 'This is a test email sent from a background Celery task.'
-    }
-    # task = sendEmail.delay(email_data)
-    # sendEmail.apply_async(args=[email_data])
     lost_pets = get_recent_lost_pets()
     return render_template("index.html", lost_pets=lost_pets)
 
@@ -282,7 +273,16 @@ def reportPet():
         try:
             db.session.add(lost_animal)
             db.session.commit()
-            sendAlert(lost_animal)
+            #  sending asynchronously
+            petData = {'id':lost_animal.id,
+                        'type':lost_animal.animal.type,
+                       'breed':lost_animal.animal.breed,
+                       'latitude':lost_animal.location.latitude,
+                       'longitude':lost_animal.location.longitude}
+            
+            # sendAlert(petData)
+            
+            sendAlert.apply_async(args=[petData])
             flash(f"{animal.type} is reported as found at {location.formatted_address}")
             return redirect("/")
         except Exception as e:
