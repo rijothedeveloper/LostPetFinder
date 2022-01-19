@@ -4,7 +4,7 @@
         <li> <a href="/pet/add">Report Lost Pet</a> </li>
         <li> <a href="/browse-pets">Lost & Found</a> </li>
         <li> <a href="/setAlert">Create Alert</a> </li>
-        {% if not user %}
+       
         <div class="nav-right">
             {% if not g.user %}
                 <li > <a href="/signup">Sign Up</a> </li>
@@ -14,7 +14,6 @@
             <li > <a href="/logout">Logout</a> </li>
             {% endif %}
         </div>
-        {% endif %}
-
+        
     </ul>
 </nav>
