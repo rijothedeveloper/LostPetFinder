@@ -89,7 +89,11 @@ def sendEmail(email_data):
     msg.body = email_data['body']
     with app.app_context():
         mail.send(msg)
-    
+  
+# @celery.task  
+def sendAlert(lost_animal):
+    alerts = Alert.query.filter(Alert.type == lost_animal.animal.type).filter(Alert.breed == lost_animal.breed).all()
+    print("hi")
 
 @app.route("/")
 def show_home():
@@ -100,7 +104,7 @@ def show_home():
         'body': 'This is a test email sent from a background Celery task.'
     }
     # task = sendEmail.delay(email_data)
-    sendEmail.apply_async(args=[email_data])
+    # sendEmail.apply_async(args=[email_data])
     lost_pets = get_recent_lost_pets()
     return render_template("index.html", lost_pets=lost_pets)
 
@@ -229,6 +233,7 @@ def reportPet():
         try:
             db.session.add(lost_animal)
             db.session.commit()
+            sendAlert(lost_animal)
             flash(f"{animal.type} is reported as found at {location.formatted_address}")
             return redirect("/")
         except:
