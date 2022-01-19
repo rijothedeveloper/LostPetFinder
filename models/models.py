@@ -175,3 +175,5 @@ class Alert(db.Model):
     breed = db.Column(db.Text)
     
     within = db.Column(db.Integer)
+    
+    location = db.relationship("Location")

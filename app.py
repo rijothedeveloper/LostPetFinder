@@ -7,6 +7,9 @@ from forms.login_form import LoginForm
 from forms.report_pet_form import ReportPetForm
 from models.models import Animal, db, connect_db, Location, User, Lost_animal, Alert
 from werkzeug.utils import secure_filename
+from sqlalchemy import or_
+import requests
+import json
 from celery import Celery
 from flask_mail import Mail, Message
 
@@ -89,11 +92,42 @@ def sendEmail(email_data):
     msg.body = email_data['body']
     with app.app_context():
         mail.send(msg)
+        
+def isValidDistance(animal_location, alert_location, within):
+    query = {'origins':f"{animal_location.latitude},{animal_location.longitude}", 
+             'destinations':f"{alert_location.latitude},{alert_location.longitude}",
+             'units' : 'imperial',
+             'key' : 'AIzaSyAleLWSoj4wIihOMwdStcPdztvvg5JmxqA'}
+    try:
+        response = requests.get('https://maps.googleapis.com/maps/api/distancematrix/json', params=query)
+        response.raise_for_status()
+        distanceMatrix = response.json()
+        distance_str = distanceMatrix['rows'][0]['elements'][0]['distance']['text']
+        distance = float(distance_str.replace(" mi",""))
+        if distance <= within:
+            return True
+        return False
+    except requests.exceptions.HTTPError as errh:
+        print(errh)
+    except requests.exceptions.ConnectionError as errc:
+        print(errc)
+    except requests.exceptions.Timeout as errt:
+        print(errt)
+    except requests.exceptions.RequestException as err:
+        print(err)
   
+def getAlertEmails(lost_animal):
+    alerts = db.session.query(Alert).filter(Alert.type == lost_animal.animal.type).filter(or_(Alert.breed == lost_animal.animal.breed, Alert.breed == "")).all()
+    alertEmails = []
+    for alert in alerts:
+        if isValidDistance(lost_animal.location, alert.location, alert.within):
+            user = User.query.get(alert.user_id)
+            alertEmails.append(user.email)
+    return alertEmails
+
 # @celery.task  
 def sendAlert(lost_animal):
-    alerts = Alert.query.filter(Alert.type == lost_animal.animal.type).filter(Alert.breed == lost_animal.breed).all()
-    print("hi")
+    alertEmails = getAlertEmails(lost_animal)
 
 @app.route("/")
 def show_home():
@@ -236,8 +270,8 @@ def reportPet():
             sendAlert(lost_animal)
             flash(f"{animal.type} is reported as found at {location.formatted_address}")
             return redirect("/")
-        except:
-            flash("Pet is not reported")
+        except Exception as e:
+            flash(f"Pet is not reported {e}")
     return render_template("pets/report-pet-form.html", form=form)
 
 @app.route("/pet/<int:petId>/edit", methods=["GET", "POST"])
