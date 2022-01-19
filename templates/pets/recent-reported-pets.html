@@ -9,6 +9,7 @@
             <h5>{{lost_pet.animal.breed}}</h5>
             <h5>{{lost_pet.location.formatted_address}}</h5>
             <p>{{lost_pet.comments}}</p>
+            <p><a href="/pet/{{lost_pet.id}}">Details</a></p>
             {% if user %}
             <div class="icon">
                 <a href="/pet/{{lost_pet.id}}/delete"><img src="/static/img/delete.png" alt="delete pet" id="btn-delete"></a>

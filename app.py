@@ -216,6 +216,11 @@ def show_pets():
     lost_pets = get_recent_lost_pets()
     return render_template("pets/show-reported-pets.html", lost_pets=lost_pets)
 
+@app.route("/pet/<int:petId>")
+def showPetDetails(petId):
+    pet = Lost_animal.query.get_or_404(petId)
+    return render_template("pets/show-reported-pet.html", lost_pet=pet)
+
 #############################################################################
 #Logged in area
 
