@@ -47,15 +47,18 @@ nav ul {
     
 }
 
-nav ul li a {
+nav ul > li a {
     display: block;
     color: var(--textBoldColor);
     text-align: center;
-    padding: 10px 14px;
+    margin: 10px 14px;
     text-decoration: none;
   }
 
 .btn-border { 
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: 3px solid var(--buttonColor);
   border-radius: 11px;
 }
@@ -68,6 +71,9 @@ nav ul li a {
 }
 
 .btn-fill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: 3px solid var(--buttonColor);
   background-color: var(--buttonColor);
   border-radius: 11px;
@@ -79,6 +85,10 @@ nav ul li a {
   padding-left: 24px;
   padding-right: 24px;
   text-decoration: none;
+}
+
+nav .btn-border, nav .btn-fill {
+  min-width: 100px;
 }
 
   form {
