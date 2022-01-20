@@ -4,6 +4,10 @@
     --color3: #FEFAE0;
     --color4: #F4A261;
     --color5: #BC6C25;
+
+    --bodybgColor: #F5EAE2;
+    --textBoldColor: #150E0B;
+    --buttonColor: #AF615C;
   }
 
   * {
@@ -12,35 +16,72 @@
     padding: 0;
   }
 
+body {
+    background-color: var(--bodybgColor);
+    padding: 8px;
+  }
+
+  /* navbar */
+
+  nav {
+    padding: 10px;
+    margin-right: 150px;
+    font-family: 'Lato', sans-serif;
+    height: 150px;
+  }
+
+  nav img {
+    float: left;
+  }
+
 nav ul {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 150px;
     list-style-type: none;
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: var(--secondary-color);
-}
-
-nav ul li {
-    float: left;
-}
-
-nav ul div.nav-right{
-    float: right;
-    margin-right: 10px;
+    
 }
 
 nav ul li a {
     display: block;
-    color: white;
+    color: var(--textBoldColor);
     text-align: center;
-    padding: 14px 16px;
+    padding: 14px 14px;
     text-decoration: none;
     
   }
 
-  nav ul li a:hover {
-    background-color: var(--primary-color);
-  }
+.btn-border {
+  
+  border: 3px solid var(--buttonColor);
+  border-radius: 11px;
+  align-content: center;
+}
+
+.btn-border a {
+  padding-left: 24px;
+  padding-right: 24px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+
+.btn-fill {
+  background-color: var(--buttonColor);
+  border-radius: 11px;
+  align-content: center;
+  margin-right: 10px;
+}
+
+.btn-fill a {
+  color: white;
+  padding-left: 24px;
+  padding-right: 24px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
 
   form {
       width:80%;

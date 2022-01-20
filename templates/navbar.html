@@ -1,19 +1,17 @@
 <nav>
+    <a href="/"><img src="/static/img/logo.png" alt="logo"></a>
     <ul>
-        <li> <a href="/">Home</a> </li>
         <li> <a href="/pet/add">Report Lost Pet</a> </li>
         <li> <a href="/browse-pets">Lost & Found</a> </li>
         <li> <a href="/setAlert">Create Alert</a> </li>
        
-        <div class="nav-right">
             {% if not g.user %}
-                <li > <a href="/signup">Sign Up</a> </li>
-                <li > <a href="/login">Login</a> </li>
+                <div class="btn-fill"> <li > <a href="/signup">Sign Up</a> </li> </div>
+                <div class="btn-border"> <li > <a href="/login">Login</a> </li> </div>
             {% else %}
-            <li > <a href="/users/{{ g.user.id }}">{{ g.user.first_name }}</a> </li>
-            <li > <a href="/logout">Logout</a> </li>
+            <div class="btn-fill"><li > <a href="/users/{{ g.user.id }}">{{ g.user.first_name }}</a> </li> </div>
+            <div class="btn-border"> <li > <a href="/logout">Logout</a> </li> </div>
             {% endif %}
-        </div>
         
     </ul>
 </nav>
