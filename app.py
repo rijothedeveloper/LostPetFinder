@@ -332,7 +332,7 @@ def delete_pet(petId):
 
 @app.route("/setAlert", methods=["GET", "POST"])
 def setAlert():
-    if g.user == None :
+    if not isLogged() :
         flash("not autherised to edit this pet", "error")
         return redirect("/login")
     form = AlertForm()
@@ -350,7 +350,7 @@ def setAlert():
 @app.route("/alert/<int:alertId>/edit", methods=["GET", "POST"])
 def editAlert(alertId):
     # check logged in status
-    if g.user == None :
+    if not isLogged() :
         flash("not autherised to edit this alert", "error")
         return redirect("/login")
     alert = Alert.query.get(alertId)

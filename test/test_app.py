@@ -73,7 +73,7 @@ class test_app(TestCase):
          html = res.get_data(as_text=True)
          shouldContain = 'Login'
          self.assertIn(shouldContain, html)
-         shouldContain = 'welcome to lost petfinder'
+         shouldContain = 'For lost pets'
          self.assertIn(shouldContain, html)
             
    def test_signup_page_get(self):
@@ -125,7 +125,7 @@ class test_app(TestCase):
          self.assertEqual(resp.status_code, 200)
          
          html = resp.get_data(as_text=True)
-         shouldContain = 'rego'
+         shouldContain = 'rijo'
          self.assertIn(shouldContain, html)
          
    def test_report_pet(self):
@@ -192,10 +192,10 @@ class test_app(TestCase):
          shouldContain = 'rijo'
          self.assertIn(shouldContain, html)
          # check edit button is there or not
-         shouldContain = '<button class="btn btn-primary">Save</button>'
+         shouldContain = '<button class="btn btn-border">Save</button>'
          self.assertIn(shouldContain, html)
          # check user reported pets are showing
-         shouldContain = '<p>no comments</p>'
+         shouldContain = 'details'
          self.assertIn(shouldContain, html)
          
          # test edit profile submission
