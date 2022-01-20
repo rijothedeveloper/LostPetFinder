@@ -22,6 +22,17 @@ body {
     padding: 8px;
   }
 
+  article {
+    margin-top: 24px;
+    padding: 24px;
+    background-color: var(--bannerbgColor);
+  }
+
+  article h2 {
+    margin: 16px;
+    color: var(--buttonColor);
+  }
+
   /* navbar */
 
   nav {
@@ -207,11 +218,12 @@ nav .btn-border, nav .btn-fill {
     display: flex;
     flex-wrap: wrap;
     justify-content: start;
+    gap: 10px;
   }
   
   .pet-sec, .alert-sec{
     display: flex;
-    margin: 10px;
+    gap: 10px;
     flex-direction: column;
     width: 300px;
     border: solid var(--secondary-color) 2px;

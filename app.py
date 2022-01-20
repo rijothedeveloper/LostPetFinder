@@ -140,7 +140,8 @@ def sendAlert(petData):
 @app.route("/")
 def show_home():
     lost_pets = get_recent_lost_pets()
-    return render_template("index.html", lost_pets=lost_pets)
+    pet_sec_heading = "Recently Uploaded Pets"
+    return render_template("index.html", lost_pets=lost_pets, pet_sec_heading=pet_sec_heading)
 
 @app.route("/signup", methods=["GET", "POST"])
 def addUser():
@@ -243,7 +244,8 @@ def show_profile(user_id):
     
     lost_pets = get_pets()
     alerts = Alert.query.filter(Alert.user_id == g.user.id).all()
-    return render_template("users/profile.html", form=form, user=g.user, lost_pets=lost_pets, alerts=alerts)
+    pet_sec_heading = "Uploaded Pets"
+    return render_template("users/profile.html", form=form, user=g.user, lost_pets=lost_pets, alerts=alerts, pet_sec_heading=pet_sec_heading)
     
 
 @app.route("/pet/add", methods=["GET", "POST"])
