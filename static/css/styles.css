@@ -89,6 +89,7 @@ nav ul > li a {
   background-color: var(--buttonColor);
   border-radius: 11px;
   margin-right: 10px;
+  color: white;
 }
 
 .btn-fill a {
@@ -102,11 +103,13 @@ nav .btn-border, nav .btn-fill {
   min-width: 100px;
 }
 
+/* forms */
+
   form {
-      width:80%;
+      width: 1200px;
       margin: 10px;
-      padding: 10px;
-      background-color: var(--secondary-color);
+      padding: 24px;
+      background-color: var(--bannerbgColor);
   }
 
   input, textarea, select {
@@ -128,9 +131,8 @@ nav .btn-border, nav .btn-fill {
   }
 
   .btn {
-    border: none;
     padding: 16px 32px;
-    margin: 4px 2px;
+    margin-top: 10px;
   }
   
   .btn-primary {
@@ -146,6 +148,10 @@ nav .btn-border, nav .btn-fill {
       color: red;
   }
 
+  .form-cls {
+    display: flex;
+    justify-content: center;
+  }
   /* home page */
 
 

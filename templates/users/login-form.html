@@ -3,7 +3,7 @@
 {% block title %}Sign up{% endblock %}
 
 {% block content %}
-
+<div class="form-cls">
     <form method="POST" id="user_form">
 
         <h2 class="col-primary">Enter your details.</h2>
@@ -17,8 +17,8 @@
         {% endfor %}
         {{ field(placeholder=field.label.text) }}
         {% endfor %}
-        <button class="btn btn-primary">Log in!</button>
+        <button class="btn btn-fill">Log in!</button>
 
     </form>
-
+</div>
 {% endblock %}

@@ -3,7 +3,7 @@
 {% block title %}Sign up{% endblock %}
 
 {% block content %}
-
+<div class="form-cls">
     <form method="POST" id="user_form">
 
         <h2 class="col-primary">Enter your details.</h2>
@@ -19,11 +19,12 @@
         {% endfor %}
 
         {% if editForm %}
-            <button class="btn btn-primary">Edit Alert!</button>
+            <button class="btn btn-border">Edit Alert!</button>
         {% else %}
-            <button class="btn btn-primary">Create Alert!</button>
+            <button class="btn btn-fill">Create Alert!</button>
         {% endif %}
 
     </form>
+</div>
 
 {% endblock %}

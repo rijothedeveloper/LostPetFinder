@@ -3,7 +3,7 @@
 {% block title %}Report Pet{% endblock %}
 
 {% block content %}
-
+<div class="form-cls">
     <form enctype="multipart/form-data" method="POST" id="user_form">
 
         <h2 class="col-primary">Enter Pet details.</h2>
@@ -17,8 +17,8 @@
         {% endfor %}
         {{ field(placeholder=field.label.text) }}
         {% endfor %}
-        <button class="btn btn-primary">Report Pet</button>
+        <button class="btn btn-fill">Report Pet</button>
 
     </form>
-
+</div>
 {% endblock %}

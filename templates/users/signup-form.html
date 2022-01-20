@@ -1,17 +1,19 @@
-<form method="POST" id="user_form">
+<div class="form-cls">
+    <form method="POST" id="user_form">
 
-    <h2 class="col-primary">Enter your details.</h2>
+        <h2 class="col-primary">Enter your details.</h2>
 
-    {{ form.hidden_tag() }}
+        {{ form.hidden_tag() }}
 
-    {% for field in form if field.widget.input_type != 'hidden' %}
-    {{ field.label }}
-    {% for error in field.errors %}
-        <span class="text-danger">{{ error }}</span>
-    {% endfor %}
-    {{ field(placeholder=field.label.text) }}
-    {% endfor %}
-    
-    <button class="btn btn-primary">Sign me up!</button>
+        {% for field in form if field.widget.input_type != 'hidden' %}
+        {{ field.label }}
+        {% for error in field.errors %}
+            <span class="text-danger">{{ error }}</span>
+        {% endfor %}
+        {{ field(placeholder=field.label.text) }}
+        {% endfor %}
+        
+        <button class="btn btn-fill">Sign me up!</button>
 
-</form>
+    </form>
+</div>
