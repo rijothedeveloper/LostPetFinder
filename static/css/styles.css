@@ -1,10 +1,4 @@
   :root {
-    --primary-color: #283618;
-    --secondary-color: #545E31;
-    --color3: #FEFAE0;
-    --color4: #F4A261;
-    --color5: #BC6C25;
-
     --bodybgColor: #F5EAE2;
     --bannerbgColor: #E6DDD6;
     --textBoldColor: #150E0B;
@@ -117,27 +111,21 @@ nav .btn-border, nav .btn-fill {
       width: 100%;
       padding: 12px 20px;
       margin: 8px 0;
-      border: 2px solid var(--secondary-color);
+      border: 2px solid var(--textBoldColor);
       border-radius: 10px;
-      background-color: var(--color3);
   }
 
   input:focus {
-    border: 2px solid var(--primary-color);
+    border: 2px solid var(--buttonColor);
   }
 
   .col-primary {
-      color: var(--primary-color);
+      color: var(--buttonColor);
   }
 
   .btn {
     padding: 16px 32px;
     margin-top: 10px;
-  }
-  
-  .btn-primary {
-    background-color: var(--primary-color);
-    color: white;
   }
 
   .alert-success{
@@ -232,7 +220,7 @@ nav .btn-border, nav .btn-fill {
     gap: 10px;
     flex-direction: column;
     width: 300px;
-    border: solid var(--secondary-color) 2px;
+    border: solid var(--textBoldColor) 1px;
     padding: 5px;
   }
 
