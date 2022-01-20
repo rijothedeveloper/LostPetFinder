@@ -6,6 +6,7 @@
     --color5: #BC6C25;
 
     --bodybgColor: #F5EAE2;
+    --bannerbgColor: #E6DDD6;
     --textBoldColor: #150E0B;
     --buttonColor: #AF615C;
   }
@@ -36,6 +37,7 @@ body {
 
 nav ul {
     display: flex;
+    height: 60px;
     justify-content: flex-end;
     padding-right: 150px;
     list-style-type: none;
@@ -51,24 +53,23 @@ nav ul li a {
     text-align: center;
     padding: 14px 14px;
     text-decoration: none;
-    
   }
 
-.btn-border {
-  
+.btn-border { 
   border: 3px solid var(--buttonColor);
   border-radius: 11px;
   align-content: center;
 }
 
 .btn-border a {
+  color: var(--textBoldColor);
   padding-left: 24px;
   padding-right: 24px;
-  padding-bottom: 10px;
-  padding-top: 10px;
+  text-decoration: none;
 }
 
 .btn-fill {
+  border: 3px solid var(--buttonColor);
   background-color: var(--buttonColor);
   border-radius: 11px;
   align-content: center;
@@ -79,8 +80,7 @@ nav ul li a {
   color: white;
   padding-left: 24px;
   padding-right: 24px;
-  padding-bottom: 10px;
-  padding-top: 10px;
+  text-decoration: none;
 }
 
   form {
@@ -136,7 +136,44 @@ nav ul li a {
   }
 
   .banner {
+    font-family: 'Source Sans Pro', sans-serif;
+    color: var(--textBoldColor);
     grid-column: 1 / 4;
+    display: flex;
+    justify-content: space-around;
+    background-color: var(--bannerbgColor);
+    padding: 24px;
+  }
+
+  .banner h3 {
+    font-family: 'Neonderthaw', cursive;
+    font-size: 2rem;
+  }
+
+  .banner-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .banner-btn {
+    margin-top: 20px;
+  }
+
+  .banner-btn .btn-border, .banner-btn .btn-fill {
+    padding: 10px;
+  }
+
+  
+
+  .banner-right img {
+    width: 30vw;
+  }
+
+  .inline {
+    display: inline;
   }
 
   .recent {

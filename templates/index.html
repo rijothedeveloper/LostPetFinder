@@ -5,7 +5,18 @@
 {% block content %}
     <div class="home-container">
         <div class="banner">
-            welcome to lost petfinder
+            <div class="banner-left">
+                <h1>PET FIND</h1>
+                <h2>For lost pets</h2>
+                <h3>Please help pets to find their home</h3>
+                <div class="banner-btn">
+                    <div class="btn-fill inline"> <a href="/pet/add">Report a Pet</a> </div>
+                    <div class="btn-border inline"> <a href="/browse-pets">Browse Pets</a> </div>
+                </div>
+            </div>
+            <div class="banner-right">
+                <img src="/static/img/banner-img.png" alt="banner image">
+            </div>
         </div>
         <div class="recent">
             {% include 'pets/recent-reported-pets.html' %}
