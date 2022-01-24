@@ -129,11 +129,17 @@ nav .btn-border, nav .btn-fill {
   }
 
   .alert-success{
-      color: green;
+    background-color: #0C9F12;
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
   }
 
   .alert-error {
-      color: red;
+    background-color: #AF1919;
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
   }
 
   .form-cls {

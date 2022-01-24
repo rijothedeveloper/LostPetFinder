@@ -251,6 +251,7 @@ def show_profile(user_id):
 @app.route("/pet/add", methods=["GET", "POST"])
 def reportPet():
     if not isLogged():
+        flash("not autherised to report a pet, Login first", "error")
         return redirect("/login")
     form = ReportPetForm()
     if form.validate_on_submit():
@@ -333,7 +334,7 @@ def delete_pet(petId):
 @app.route("/setAlert", methods=["GET", "POST"])
 def setAlert():
     if not isLogged() :
-        flash("not autherised to edit this pet", "error")
+        flash("not autherised to create alert, Login first", "error")
         return redirect("/login")
     form = AlertForm()
     if form.validate_on_submit():
